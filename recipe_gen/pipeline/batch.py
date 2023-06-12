@@ -28,7 +28,9 @@ from recipe_gen.pipeline import DataFrameDataset
 from recipe_gen.language import PAD_INDEX, pretty_decode, pretty_decode_tokens, N_TECHNIQUES, PAD_TECHNIQUE_INDEX
 
 def load_full_data(dataset_folder,
-        base_splits=['train', 'valid_new', 'test_new']):
+        # base_splits=['train', 'valid_new', 'test_new']):
+        base_splits=['train', 'validation', 'test']):
+        
     """
     Load full data (including recipe information, user information)
 
@@ -59,6 +61,8 @@ def load_full_data(dataset_folder,
 
     # User items
     user_items = pd.read_pickle(os.path.join(dataset_folder, 'user_rep.pkl'))
+    # user_items = pd.read_pickle(os.path.join(dataset_folder, 'PP_users.pkl'))
+    
     max_ints = user_items['n_items'].max()
     print('{} - Loaded items for {:,} users, {:,} maximum interactions/user ({:,.3f} MB total memory)'.format(
         datetime.now() - start, len(user_items), max_ints, user_items.memory_usage(deep=True).sum() / 1024 / 1024
@@ -66,6 +70,8 @@ def load_full_data(dataset_folder,
 
     # Recipes
     df_r = pd.read_pickle(os.path.join(dataset_folder, 'recipes.pkl'))
+    # df_r = pd.read_pickle(os.path.join(dataset_folder, 'PP_recipes.pkl'))
+    
     print('{} - Loaded {:,} recipes ({:,.3f} MB total memory)'.format(
         datetime.now() - start, len(df_r), df_r.memory_usage(deep=True).sum() / 1024 / 1024
     ))
@@ -82,7 +88,9 @@ def load_full_data(dataset_folder,
     return train_df, valid_df, test_df, user_items, df_r, ingr_map
 
 def pad_name(name_tokens, max_name_tokens=15):
+    # return name_tokens + [PAD_INDEX]*(max_name_tokens - len(name_tokens))
     return name_tokens + [PAD_INDEX]*(max_name_tokens - len(name_tokens))
+    
 
 def pad_steps(step_tokens, max_step_tokens=256):
     # Pad steps to maximum step length

@@ -153,8 +153,10 @@ if __name__ == "__main__":
     from recipe_gen.pipeline.batch import load_full_data, pad_recipe_info, load_recipe_tensors
 
     # Module imports
-    from . import create_model
-    from .generate import decode_single
+    # from . import create_model
+    # from .generate import decode_single
+    from recipe_gen.models.baseline import create_model
+    from recipe_gen.models.baseline.generate import decode_single
 
     parser = argparse.ArgumentParser(description='Baseline for recipe generation (dynamic attn)')
     parser.add_argument('--data-dir', type=str, required=True, help='location of the data corpus')
@@ -176,7 +178,7 @@ if __name__ == "__main__":
         help='learning rate annealing (default 1.0 - no annealing, 0.0 - early stoppage)')
     parser.add_argument('--teacher-forcing', default=None, type=int,
         help='number of epochs to teacher-force when training (default ALL epochs)')
-    parser.add_argument('--save', type=str, default='<MODEL FOLDER>',
+    parser.add_argument('--save', type=str, default='MODEL_FOLDER',
         help='path to save the final model')
 
     parser.add_argument('--exp-name', type=str, required=True, default='base', help='exp name')
